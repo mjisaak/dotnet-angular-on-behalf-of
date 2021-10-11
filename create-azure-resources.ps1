@@ -6,5 +6,9 @@ $backendApp = 'on-behalf-of-backend-web'
 
 az group create --name $rg --location $location
 az appservice plan create --name $appServicePlan --resource-group $rg --sku S1 --is-linux
-az webapp create --resource-group $rg --plan $appServiceplan --name $frontendApp --runtime '"NODE|14-lts"' --deployment-local-git --query deploymentLocalGitUrl
+az webapp create --resource-group $rg --plan $appServiceplan --name $frontendApp --runtime '"NODE|14-lts"' --startup-file "pm2 serve /home/site/wwwroot --no-daemon --spa"
 az webapp create --resource-group $rg --plan $appServiceplan --name $backendApp --runtime '"DOTNET|6.0"' --deployment-local-git --query deploymentLocalGitUrl
+
+# pm2 serve /home/site/wwwroot --no-daemon --spa 
+
+# https://www.c-sharpcorner.com/article/easily-deploy-angular-app-to-azure-from-visual-studio-code/
