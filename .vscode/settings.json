@@ -1,0 +1,5 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/868387ea-d436-4733-aef2-2adc325e4007/resourceGroups/rg-on-behalf-of-sample/providers/Microsoft.Web/sites/on-behalf-of-frontend-web",
+    "appService.deploySubpath": "src/frontend/dist/frontend",
+    "appService.showBuildDuringDeployPrompt": false
+}
