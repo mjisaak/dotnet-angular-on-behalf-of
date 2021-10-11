@@ -1,12 +1,17 @@
-<code>{{ token | async | json }}</code>
-<br/>
-<br/>
 <div>
-  <button>Call API</button>
-  <p>Result:</p><code></code>
+  <code>{{ tokenResponse | async }}</code>
 </div>
 <br/>
 <br/>
-<a href="/.auth/logout">
-  <button>Logout</button>
-</a>
+<div>
+  <button (click)="callApi()">Call API</button>
+  <p>Result:</p>
+  <code>{{ apiResponse | async }}</code>
+</div>
+<br/>
+<br/>
+<div>
+  <a href="/.auth/logout">
+    <button>Logout</button>
+  </a>
+</div>
