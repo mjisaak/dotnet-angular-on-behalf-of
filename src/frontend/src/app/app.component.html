@@ -17,7 +17,7 @@
 <br/>
 <br/>
 <div>
-  <input [(ngModel)]="targetUrl" size="50" (keyup.enter)="callThroughBackendApi()" />
+  <input [(ngModel)]="targetUrl" size="50" (keyup.enter)="callGraphApi()" />
   <button (click)="callGraphApi()">Call API</button>
   <p>Result:</p>
   <code *ngIf="graphResponse?.data | async as result">{{ result }}</code>
