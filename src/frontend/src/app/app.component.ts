@@ -5,7 +5,12 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 const apiUrl = 'https://on-behalf-of-backend-web.azurewebsites.net';
 
-export enum Status {
+type HttpResult<T> = {
+  data: Observable<T>;
+  status: ReplaySubject<Status>;
+} | null;
+
+enum Status {
   Loading,
   Success,
 }
@@ -18,15 +23,15 @@ export enum Status {
 export class AppComponent implements OnInit {
   public Status = Status;
 
-  private idToken: string = "";
-  private accessToken: string = "";
-
-  public tokenResponse: { data: Observable<string>; status: ReplaySubject<Status>; } | null = null;
-  public backendResponse: { data: Observable<string>; status: ReplaySubject<Status>; } | null = null;
-  public graphResponse: { data: Observable<string>; status: ReplaySubject<Status>; } | null = null;
-  public delegatedResponse: { data: Observable<string>; status: ReplaySubject<Status>; } | null = null;
+  public tokenResponse: HttpResult<string> = null;
+  public backendResponse: HttpResult<string> = null;
+  public graphResponse: HttpResult<string> = null;
+  public delegatedResponse: HttpResult<string> = null;
 
   public targetUrl: string = "https://graph.microsoft.com/v1.0/me";
+
+  private idToken: string | null = null;
+  private accessToken: string | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -57,7 +62,9 @@ export class AppComponent implements OnInit {
 
   public callBackendApi(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.get<{}>(`${apiUrl}/WeatherForecast`, { headers: { 'Authorization': `Bearer ${this.idToken}` } })
+    var request = this.http.get<unknown>(`${apiUrl}/WeatherForecast`,
+      { headers: { 'Authorization': `Bearer ${this.idToken}` } }
+    )
       .pipe(
         map(result => {
           return JSON.stringify(result);
@@ -80,7 +87,9 @@ export class AppComponent implements OnInit {
 
   public callGraphApi(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.get<{}>('https://graph.microsoft.com/v1.0/me', { headers: { 'Authorization': `Bearer ${this.accessToken}` } })
+    var request = this.http.get<unknown>('https://graph.microsoft.com/v1.0/me',
+      { headers: { 'Authorization': `Bearer ${this.accessToken}` } }
+    )
       .pipe(
         map(result => {
           return JSON.stringify(result);
@@ -103,7 +112,7 @@ export class AppComponent implements OnInit {
 
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>(Status.Loading);
-    var request = this.http.post<{}>(`${apiUrl}/Delegated`,
+    var request = this.http.post<unknown>(`${apiUrl}/Delegated`,
       { api_url: this.targetUrl, access_token: this.accessToken },
       { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
     )
