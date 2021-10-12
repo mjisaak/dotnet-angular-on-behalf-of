@@ -28,6 +28,6 @@ public class DelegatedController : ControllerBase
                 }
             });
 
-        return Ok(result);
+        return Ok(await result.Content.ReadAsStringAsync());
     }
 }
