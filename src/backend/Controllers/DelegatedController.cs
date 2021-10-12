@@ -12,6 +12,7 @@ public class DelegatedController : ControllerBase
 {
     public class Request
     {
+        [JsonPropertyName("api_url")] public string ApiUrl { get; set; }
         [JsonPropertyName("access_token")] public string AccessToken { get; set; }
     }
     
@@ -20,7 +21,7 @@ public class DelegatedController : ControllerBase
     {
         using var httpClient = new HttpClient();
         var result = await httpClient.SendAsync(
-            new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me")
+            new HttpRequestMessage(HttpMethod.Get, body.ApiUrl)
             {
                 Headers =
                 {

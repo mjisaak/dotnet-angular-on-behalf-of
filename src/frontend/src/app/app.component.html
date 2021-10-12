@@ -18,6 +18,7 @@
 <br/>
 <br/>
 <div>
+  <input [(ngModel)]="apiUrl" />
   <button (click)="callGraphThroughBackendApi()">Call Graph API (through backend)</button>
   <p>Result:</p>
   <code>{{ delegatedResponse | async }}</code>
