@@ -13,7 +13,7 @@ public class DelegatedController : ControllerBase
     {
         using var httpClient = new HttpClient();
         var result = await httpClient.SendAsync(
-            new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/v1.0/me")
+            new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me")
             {
                 Headers =
                 {
