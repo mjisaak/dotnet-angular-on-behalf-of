@@ -1,5 +1,3 @@
-using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
@@ -30,6 +28,7 @@ public class DelegatedController : ControllerBase
                     Authorization = new AuthenticationHeaderValue("Bearer", body.AccessToken)
                 }
             });
-        
+
+        return Ok(await result.Content.ReadAsStringAsync());
     }
 }

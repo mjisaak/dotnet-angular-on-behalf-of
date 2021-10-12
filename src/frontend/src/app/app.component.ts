@@ -28,7 +28,8 @@ export class AppComponent implements OnInit {
   public graphResponse: HttpResult<string> = null;
   public delegatedResponse: HttpResult<string> = null;
 
-  public targetUrl: string = "https://graph.microsoft.com/v1.0/me";
+  public targetUrl: string = 'https://graph.microsoft.com/v1.0/me';
+  public targetUrlBackend: string = "https://graph.microsoft.com/v1.0/me";
 
   private idToken: string | null = null;
   private accessToken: string | null = null;
@@ -87,7 +88,7 @@ export class AppComponent implements OnInit {
 
   public callGraphApi(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.get<unknown>('https://graph.microsoft.com/v1.0/me',
+    var request = this.http.get<unknown>(this.targetUrl,
       { headers: { 'Authorization': `Bearer ${this.accessToken}` } }
     )
       .pipe(
@@ -113,7 +114,7 @@ export class AppComponent implements OnInit {
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>(Status.Loading);
     var request = this.http.post<unknown>(`${apiUrl}/Delegated`,
-      { api_url: this.targetUrl, access_token: this.accessToken },
+      { api_url: this.targetUrlBackend, access_token: this.accessToken },
       { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
     )
       .pipe(
