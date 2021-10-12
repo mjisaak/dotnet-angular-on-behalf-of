@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
   }
 
   public callThroughBackendApi(): void {
-    const status = new ReplaySubject<Status>(Status.Loading);
+    const status = new ReplaySubject<Status>();
     var request = this.http.post<unknown>(`${apiUrl}/Delegated`,
       { api_url: this.targetUrlBackend, access_token: this.accessToken },
       { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
