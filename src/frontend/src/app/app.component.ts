@@ -68,7 +68,10 @@ export class AppComponent implements OnInit {
   }
 
   public callGraphThroughBackendApi(): void {
-    this.delegatedResponse = this.http.post<{}>(`${apiUrl}/Delegated`, { access_token: this.accessToken }, { headers: { 'Authorization': `Bearer ${this.idToken}` } })
+    this.delegatedResponse = this.http.post<{}>(`${apiUrl}/Delegated`, 
+      { access_token: this.accessToken }, 
+      { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
+    )
       .pipe(
         tap(result => {
           console.log(result)
