@@ -10,10 +10,10 @@ namespace backend.Controllers;
 [Route("[controller]")]
 public class DelegatedController : ControllerBase
 {
-    public class Request
+    public new class Request
     {
-        [JsonPropertyName("api_url")] public string ApiUrl { get; set; }
-        [JsonPropertyName("access_token")] public string AccessToken { get; set; }
+        [JsonPropertyName("api_url")] public string? ApiUrl { get; set; }
+        [JsonPropertyName("access_token")] public string? AccessToken { get; set; }
     }
     
     [HttpPost]
