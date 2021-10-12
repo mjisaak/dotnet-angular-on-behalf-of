@@ -27,8 +27,8 @@
 <br/>
 <br/>
 <div>
-  <input [(ngModel)]="targetUrl" size="50" />
-  <button (click)="callGraphThroughBackendApi()">Call Graph API (through backend)</button>
+  <input [(ngModel)]="targetUrl" size="50" (keyup.enter)="callThroughBackendApi()" />
+  <button (click)="callThroughBackendApi()">Call API (through backend)</button>
   <p>Result:</p>
   <code *ngIf="delegatedResponse?.data | async as result">{{ result }}</code>
   <section [ngSwitch]="delegatedResponse?.status| async">

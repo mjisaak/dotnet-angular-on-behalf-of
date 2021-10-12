@@ -46,13 +46,13 @@ export class AppComponent implements OnInit {
           return of(`Error: ${err.status} = ${err.message}`);
         }),
       );
-    
+
     this.tokenResponse = {
-        data: defer(() => {
-          status.next(Status.Loading);
-          return request;
-        }), status
-      };
+      data: defer(() => {
+        status.next(Status.Loading);
+        return request;
+      }), status
+    };
   }
 
   public callBackendApi(): void {
@@ -101,8 +101,8 @@ export class AppComponent implements OnInit {
     };
   }
 
-  public callGraphThroughBackendApi(): void {
-    const status = new ReplaySubject<Status>();
+  public callThroughBackendApi(): void {
+    const status = new ReplaySubject<Status>(Status.Loading);
     var request = this.http.post<{}>(`${apiUrl}/Delegated`,
       { api_url: this.targetUrl, access_token: this.accessToken },
       { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
@@ -127,12 +127,3 @@ export class AppComponent implements OnInit {
     };
   }
 }
-
-/*
-"login": {
-  "loginParameters": [
-    "scope=openid profile email https://graph.microsoft.com/User.Read.All"
-  ],
-  "disableWWWAuthenticate": false
-},
-*/
