@@ -1,27 +1,39 @@
 <div>
-  <code>{{ tokenResponse | async }}</code>
+  <code *ngIf="tokenResponse?.data | async as result">{{ result }}</code>
+  <section [ngSwitch]="tokenResponse?.status| async">
+    <code *ngSwitchCase="Status.Loading">Loading...</code>
+  </section>
 </div>
 <br/>
 <br/>
 <div>
   <button (click)="callBackendApi()">Call Backend API</button>
   <p>Result:</p>
-  <code>{{ backendResponse | async }}</code>
+  <code *ngIf="backendResponse?.data | async as result">{{ result }}</code>
+  <section [ngSwitch]="backendResponse?.status| async">
+    <code *ngSwitchCase="Status.Loading">Loading...</code>
+  </section>
 </div>
 <br/>
 <br/>
 <div>
   <button (click)="callGraphApi()">Call Graph API</button>
   <p>Result:</p>
-  <code>{{ graphResponse | async }}</code>
+  <code *ngIf="graphResponse?.data | async as result">{{ result }}</code>
+  <section [ngSwitch]="graphResponse?.status| async">
+    <code *ngSwitchCase="Status.Loading">Loading...</code>
+  </section>
 </div>
 <br/>
 <br/>
 <div>
-  <input [(ngModel)]="apiUrl" />
+  <input [(ngModel)]="targetUrl" size="50" />
   <button (click)="callGraphThroughBackendApi()">Call Graph API (through backend)</button>
   <p>Result:</p>
-  <code>{{ delegatedResponse | async }}</code>
+  <code *ngIf="delegatedResponse?.data | async as result">{{ result }}</code>
+  <section [ngSwitch]="delegatedResponse?.status| async">
+    <code *ngSwitchCase="Status.Loading">Loading...</code>
+  </section>
 </div>
 <br/>
 <br/>
