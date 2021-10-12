@@ -61,6 +61,13 @@ export class AppComponent implements OnInit {
     };
   }
 
+  public refreshToken(): void {
+    var request = this.http.get<void>('/.auth/refresh');
+    request.subscribe(_ => {
+      this.ngOnInit();
+    });
+  }
+
   public callBackendApi(): void {
     const status = new ReplaySubject<Status>();
     var request = this.http.get<unknown>(`${apiUrl}/WeatherForecast`,
