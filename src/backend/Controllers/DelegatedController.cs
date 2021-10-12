@@ -1,4 +1,6 @@
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +10,13 @@ namespace backend.Controllers;
 [Route("[controller]")]
 public class DelegatedController : ControllerBase
 {
+    public class Request
+    {
+        [JsonPropertyName("access_token")] public string AccessToken { get; set; }
+    }
+    
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] dynamic body)
+    public async Task<IActionResult> Post([FromBody] Request body)
     {
         using var httpClient = new HttpClient();
         var result = await httpClient.SendAsync(
@@ -17,7 +24,7 @@ public class DelegatedController : ControllerBase
             {
                 Headers =
                 {
-                    Authorization = "Bearer " + body.access_token
+                    Authorization = new AuthenticationHeaderValue("Bearer", body.AccessToken)
                 }
             });
 
