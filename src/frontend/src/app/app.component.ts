@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
     this.tokenResponse = this.http.get<{ access_token: string, id_token: string }[]>('/.auth/me')
       .pipe(
         tap(tokens => {
-          console.log(tokens[0])
           this.idToken = tokens[0].id_token;
           this.accessToken = tokens[0].access_token;
         }),
@@ -40,9 +39,6 @@ export class AppComponent implements OnInit {
   public callBackendApi(): void {
     this.backendResponse = this.http.get<{}>(`${apiUrl}/WeatherForecast`, { headers: { 'Authorization': `Bearer ${this.idToken}` } })
       .pipe(
-        tap(result => {
-          console.log(result)
-        }),
         map(result => {
           return JSON.stringify(result);
         }),
@@ -55,9 +51,6 @@ export class AppComponent implements OnInit {
   public callGraphApi(): void {
     this.graphResponse = this.http.get<{}>('https://graph.microsoft.com/v1.0/me', { headers: { 'Authorization': `Bearer ${this.accessToken}` } })
       .pipe(
-        tap(result => {
-          console.log(result)
-        }),
         map(result => {
           return JSON.stringify(result);
         }),
@@ -73,9 +66,6 @@ export class AppComponent implements OnInit {
       { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
     )
       .pipe(
-        tap(result => {
-          console.log(result)
-        }),
         map(result => {
           return JSON.stringify(result);
         }),
