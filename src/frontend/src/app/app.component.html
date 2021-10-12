@@ -18,6 +18,13 @@
 <br/>
 <br/>
 <div>
+  <button (click)="callGraphThroughBackendApi()">Call Graph API (through backend)</button>
+  <p>Result:</p>
+  <code>{{ delegatedResponse | async }}</code>
+</div>
+<br/>
+<br/>
+<div>
   <a href="/.auth/logout">
     <button>Logout</button>
   </a>

@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+const apiUrl = 'https://on-behalf-of-backend-web.azurewebsites.net';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +16,7 @@ export class AppComponent implements OnInit {
   public tokenResponse: Observable<string> | null = null;
   public backendResponse: Observable<string> | null = null;
   public graphResponse: Observable<string> | null = null;
+  public delegatedResponse: Observable<string> | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -35,7 +38,7 @@ export class AppComponent implements OnInit {
   }
 
   public callBackendApi(): void {
-    this.backendResponse = this.http.get<{}>('https://on-behalf-of-backend-web.azurewebsites.net/WeatherForecast', { headers: { 'Authorization': `Bearer ${this.idToken}` } })
+    this.backendResponse = this.http.get<{}>(`${apiUrl}/WeatherForecast`, { headers: { 'Authorization': `Bearer ${this.idToken}` } })
       .pipe(
         tap(result => {
           console.log(result)
@@ -51,6 +54,21 @@ export class AppComponent implements OnInit {
 
   public callGraphApi(): void {
     this.graphResponse = this.http.get<{}>('https://graph.microsoft.com/v1.0/me', { headers: { 'Authorization': `Bearer ${this.accessToken}` } })
+      .pipe(
+        tap(result => {
+          console.log(result)
+        }),
+        map(result => {
+          return JSON.stringify(result);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return of(`Error: ${err.status} = ${err.message}`);
+        })
+      );
+  }
+
+  public callGraphThroughBackendApi(): void {
+    this.delegatedResponse = this.http.post<{}>(`${apiUrl}/Delegated`, { access_token: this.accessToken }, { headers: { 'Authorization': `Bearer ${this.idToken}` } })
       .pipe(
         tap(result => {
           console.log(result)
