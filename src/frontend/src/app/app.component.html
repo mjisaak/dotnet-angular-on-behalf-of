@@ -4,9 +4,16 @@
 <br/>
 <br/>
 <div>
-  <button (click)="callApi()">Call API</button>
+  <button (click)="callBackendApi()">Call Backend API</button>
   <p>Result:</p>
-  <code>{{ apiResponse | async }}</code>
+  <code>{{ backendResponse | async }}</code>
+</div>
+<br/>
+<br/>
+<div>
+  <button (click)="callGraphApi()">Call Graph API</button>
+  <p>Result:</p>
+  <code>{{ graphResponse | async }}</code>
 </div>
 <br/>
 <br/>
