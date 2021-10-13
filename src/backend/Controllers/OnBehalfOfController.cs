@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using backend.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using backend.Options;
 using Microsoft.Extensions.Options;
@@ -21,10 +22,10 @@ namespace backend.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Get()
         {
-            var token = await _tokenService.GetAccessTokenAsync(HttpContext.User, new string[] { "https://graph.microsoft.com/.default" });
+            var token = await _tokenService.GetAccessTokenAsync(HttpContext.User, new[] { "https://graph.microsoft.com/User.Read.All" });
             return Ok(token);
         }
     }

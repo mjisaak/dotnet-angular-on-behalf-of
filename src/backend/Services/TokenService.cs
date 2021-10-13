@@ -11,7 +11,6 @@ using Microsoft.Identity.Client;
 
 namespace backend.Services
 {
-
     public class TokenService
     {
         private readonly ILogger<TokenService> _logger;
