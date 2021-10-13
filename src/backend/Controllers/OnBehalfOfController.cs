@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using backend.Services;
 
-namespace backend2.Controllers
+namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
