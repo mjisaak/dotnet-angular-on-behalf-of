@@ -1,8 +1,8 @@
-- Create single AAD Application
-- Patch ADD Application to token version 2 
-    - id=$(az ad app show --id 21682370-aead-4aa0-b1c1-5ae4ccafba78 --query objectId --output tsv)
+- Create two AAD Applications
+- Patch both ADD Application to token version 2 
+    - id=$(az ad app show --id $clientId --query objectId --output tsv)
     - az rest --method PATCH --url https://graph.microsoft.com/v1.0/applications/$id --body "{'api':{'requestedAccessTokenVersion':2}}"
-- Assign AAD Applcation to both App Services (Response Type: Frontend: 302, Api: 401)
+- Assign AAD Applcations to both App Services (Response Type: Frontend: 302, Api: 401)
     - Issuer Name: https://login.microsoftonline.com/TENANT_ID/v2.0
 - Patch authsettingsV2 of the Frontend Application to include the correct scopes 
     - https://resources.azure.com - subscriptions -> $NAME -> resourceGroups -> $NAME -> providers -> Microsoft.Web -> sites -> $NAME -> config -> authsettingsV2

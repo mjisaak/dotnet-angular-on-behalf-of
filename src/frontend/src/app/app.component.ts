@@ -25,10 +25,8 @@ export class AppComponent implements OnInit {
 
   public tokenResponse: HttpResult<string> = null;
   public backendResponse: HttpResult<string> = null;
-  public graphResponse: HttpResult<string> = null;
   public delegatedResponse: HttpResult<string> = null;
 
-  public targetUrl: string = 'https://graph.microsoft.com/v1.0/me';
   public targetUrlBackend: string = "https://graph.microsoft.com/v1.0/me";
 
   private idToken: string | null = null;
@@ -71,7 +69,7 @@ export class AppComponent implements OnInit {
   public callBackendApi(): void {
     const status = new ReplaySubject<Status>();
     var request = this.http.get<unknown>(`${apiUrl}/WeatherForecast`,
-      { headers: { 'Authorization': `Bearer ${this.idToken}` } }
+      { headers: { 'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json' } }
     )
       .pipe(
         map(result => {
@@ -93,36 +91,11 @@ export class AppComponent implements OnInit {
     };
   }
 
-  public callGraphApi(): void {
-    const status = new ReplaySubject<Status>();
-    var request = this.http.get<unknown>(this.targetUrl,
-      { headers: { 'Authorization': `Bearer ${this.accessToken}` } }
-    )
-      .pipe(
-        map(result => {
-          return JSON.stringify(result);
-        }),
-        catchError((err: HttpErrorResponse) => {
-          return of(`Error: ${err.status} = ${err.message}`);
-        }),
-        tap(_ => {
-          status.next(Status.Success);
-        })
-      );
-
-    this.graphResponse = {
-      data: defer(() => {
-        status.next(Status.Loading);
-        return request;
-      }), status
-    };
-  }
-
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>();
     var request = this.http.post<unknown>(`${apiUrl}/Delegated`,
-      { api_url: this.targetUrlBackend, access_token: this.accessToken },
-      { headers: { 'Authorization': `Bearer ${this.idToken}`, 'Content-Type': 'application/json' } }
+      { api_url: this.targetUrlBackend },
+      { headers: { 'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json' } }
     )
       .pipe(
         map(result => {

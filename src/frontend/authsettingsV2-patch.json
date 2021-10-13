@@ -1,98 +1,242 @@
 {
-  "id": "/subscriptions/868387ea-d436-4733-aef2-2adc325e4007/resourceGroups/rg-on-behalf-of-sample/providers/Microsoft.Web/sites/on-behalf-of-frontend-web/config/authsettingsV2",
-  "name": "authsettingsV2",
-  "type": "Microsoft.Web/sites/config",
-  "location": "Germany West Central",
-  "properties": {
+    "id": "/subscriptions/868387ea-d436-4733-aef2-2adc325e4007/resourceGroups/rg-on-behalf-of-sample/providers/Microsoft.Web/sites/on-behalf-of-frontend-web/config/authsettingsV2",
+    "name": "authsettingsV2",
+    "type": "Microsoft.Web/sites/config",
+    "location": "Germany West Central",
+    "properties": {
       "platform": {
-          "enabled": true,
-          "runtimeVersion": "~1"
+        "enabled": true,
+        "runtimeVersion": "~1",
+        "id": "(String)",
+        "name": "(String)",
+        "kind": "(String)",
+        "type": "(String)",
+        "properties": {
+          "enabled": "(Boolean)",
+          "runtimeVersion": "(String)",
+          "configFilePath": "(String)"
+        }
       },
       "globalValidation": {
-          "requireAuthentication": true,
-          "unauthenticatedClientAction": "RedirectToLoginPage",
-          "redirectToProvider": "azureactivedirectory"
+        "requireAuthentication": true,
+        "unauthenticatedClientAction": "RedirectToLoginPage",
+        "redirectToProvider": "azureactivedirectory",
+        "id": "(String)",
+        "name": "(String)",
+        "kind": "(String)",
+        "type": "(String)",
+        "properties": {
+          "requireAuthentication": "(Boolean)",
+          "unauthenticatedClientAction": "(String)",
+          "redirectToProvider": "(String)",
+          "excludedPaths": [
+            {}
+          ]
+        }
       },
       "identityProviders": {
+        "azureActiveDirectory": {
+          "enabled": true,
+          "registration": {
+            "openIdIssuer": "https://login.microsoftonline.com/f1847c27-90be-4b38-a1b7-bd3a2029122f/v2.0",
+            "clientId": "21682370-aead-4aa0-b1c1-5ae4ccafba78",
+            "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+          },
+          "login": {
+            "loginParameters": [
+              "scope=openid profile email api://1c1e41d1-c797-47b4-af61-2b094873e394/user_impersonation"
+            ],
+            "disableWWWAuthenticate": false
+          },
+          "validation": {
+            "jwtClaimChecks": {},
+            "allowedAudiences": [],
+            "defaultAuthorizationPolicy": {
+              "allowedPrincipals": {}
+            }
+          }
+        },
+        "facebook": {
+          "enabled": true,
+          "registration": {},
+          "login": {}
+        },
+        "gitHub": {
+          "enabled": true,
+          "registration": {},
+          "login": {}
+        },
+        "google": {
+          "enabled": true,
+          "registration": {},
+          "login": {},
+          "validation": {}
+        },
+        "twitter": {
+          "enabled": true,
+          "registration": {}
+        },
+        "legacyMicrosoftAccount": {
+          "enabled": true,
+          "registration": {},
+          "login": {},
+          "validation": {}
+        },
+        "apple": {
+          "enabled": true,
+          "registration": {},
+          "login": {}
+        },
+        "id": "(String)",
+        "name": "(String)",
+        "kind": "(String)",
+        "type": "(String)",
+        "properties": {
           "azureActiveDirectory": {
-              "enabled": true,
-              "registration": {
-                  "openIdIssuer": "https://login.microsoftonline.com/f1847c27-90be-4b38-a1b7-bd3a2029122f/v2.0",
-                  "clientId": "21682370-aead-4aa0-b1c1-5ae4ccafba78",
-                  "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
-              },
-              "login": {
-                  "loginParameters": [
-                      "scope=openid profile email https://graph.microsoft.com/User.Read.All https://graph.microsoft.com/Mail.ReadBasic"
-                  ],
-                  "disableWWWAuthenticate": false
-              },
-              "validation": {
-                  "jwtClaimChecks": {},
-                  "allowedAudiences": [],
-                  "defaultAuthorizationPolicy": {
-                      "allowedPrincipals": {}
-                  }
-              }
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "facebook": {
-              "enabled": true,
-              "registration": {},
-              "login": {}
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "gitHub": {
-              "enabled": true,
-              "registration": {},
-              "login": {}
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "google": {
-              "enabled": true,
-              "registration": {},
-              "login": {},
-              "validation": {}
-          },
-          "twitter": {
-              "enabled": true,
-              "registration": {}
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "legacyMicrosoftAccount": {
-              "enabled": true,
-              "registration": {},
-              "login": {},
-              "validation": {}
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
+          },
+          "twitter": {
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "apple": {
-              "enabled": true,
-              "registration": {},
-              "login": {}
-          }
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
+          },
+          "azureStaticWebApps": {
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
+          },
+          "customOpenIdConnectProviders": {}
+        }
       },
       "login": {
-          "routes": {},
-          "tokenStore": {
-              "enabled": true,
-              "tokenRefreshExtensionHours": 72,
-              "fileSystem": {},
-              "azureBlobStorage": {}
+        "routes": {},
+        "tokenStore": {
+          "enabled": true,
+          "tokenRefreshExtensionHours": 72,
+          "fileSystem": {},
+          "azureBlobStorage": {}
+        },
+        "preserveUrlFragmentsForLogins": false,
+        "cookieExpiration": {
+          "convention": "FixedTime",
+          "timeToExpiration": "08:00:00"
+        },
+        "nonce": {
+          "validateNonce": true,
+          "nonceExpirationInterval": "00:05:00"
+        },
+        "id": "(String)",
+        "name": "(String)",
+        "kind": "(String)",
+        "type": "(String)",
+        "properties": {
+          "routes": {
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
-          "preserveUrlFragmentsForLogins": false,
+          "tokenStore": {
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
+          },
+          "preserveUrlFragmentsForLogins": "(Boolean)",
+          "allowedExternalRedirectUrls": [
+            {}
+          ],
           "cookieExpiration": {
-              "convention": "FixedTime",
-              "timeToExpiration": "08:00:00"
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "nonce": {
-              "validateNonce": true,
-              "nonceExpirationInterval": "00:05:00"
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           }
+        }
       },
       "httpSettings": {
-          "requireHttps": true,
+        "requireHttps": true,
+        "routes": {
+          "apiPrefix": "/.auth"
+        },
+        "forwardProxy": {
+          "convention": "NoProxy"
+        },
+        "id": "(String)",
+        "name": "(String)",
+        "kind": "(String)",
+        "type": "(String)",
+        "properties": {
+          "requireHttps": "(Boolean)",
           "routes": {
-              "apiPrefix": "/.auth"
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           },
           "forwardProxy": {
-              "convention": "NoProxy"
+            "id": {},
+            "name": {},
+            "kind": {},
+            "type": {},
+            "properties": {}
           }
+        }
       }
+    },
+    "kind": "(String)"
   }
-}

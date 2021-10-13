@@ -17,17 +17,6 @@
 <br/>
 <br/>
 <div>
-  <input [(ngModel)]="targetUrl" size="50" (keyup.enter)="callGraphApi()" />
-  <button (click)="callGraphApi()">Call API</button>
-  <p>Result:</p>
-  <code *ngIf="graphResponse?.data | async as result">{{ result }}</code>
-  <section [ngSwitch]="graphResponse?.status| async">
-    <code *ngSwitchCase="Status.Loading">Loading...</code>
-  </section>
-</div>
-<br/>
-<br/>
-<div>
   <input [(ngModel)]="targetUrlBackend" size="50" (keyup.enter)="callThroughBackendApi()" />
   <button (click)="callThroughBackendApi()">Call API (through backend)</button>
   <p>Result:</p>
@@ -42,5 +31,4 @@
   <a href="/.auth/logout">
     <button>Logout</button>
   </a>
-  <button (click)="refreshToken()">Refresh Token</button>
 </div>
