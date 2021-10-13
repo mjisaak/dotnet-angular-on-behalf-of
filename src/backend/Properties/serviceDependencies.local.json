@@ -1,13 +1,3 @@
 {
-  "dependencies": {
-    "secrets1": {
-      "type": "secrets.user"
-    },
-    "identityapp1": {
-      "secretStore": "LocalSecretsFile",
-      "resourceId": null,
-      "type": "identityapp.aad",
-      "connectionId": "AzureAD:ClientSecret"
-    }
-  }
+  "dependencies": {}
 }
