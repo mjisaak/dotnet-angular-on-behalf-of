@@ -13,10 +13,13 @@ namespace backend.Services;
 
 public class TokenService
 {
+    private readonly ILogger<TokenService> _logger;
+
     private readonly AzureAdOptions _azureAdOptions;
 
-    public TokenService(IOptions<AzureAdOptions> options)
+    public TokenService(ILogger<TokenService> logger, IOptions<AzureAdOptions> options)
     {
+        _logger = logger;
         _azureAdOptions = options.Value;
     }
     
@@ -47,12 +50,14 @@ public class TokenService
     private IConfidentialClientApplication BuildApp(ClaimsPrincipal principal)
     {
         var app = ConfidentialClientApplicationBuilder.Create(_azureAdOptions.ClientId)
+            .WithDebugLoggingCallback()
             .WithClientSecret(_azureAdOptions.ClientSecret)
             // we only allow users from our tenant
             .WithAuthority(AzureCloudInstance.AzurePublic, Guid.Parse(_azureAdOptions.TenantId))
             // reply url
             .Build();
 
+   
         return app;
     }
 }
