@@ -15,39 +15,37 @@
     </div>
   </div>
 
-  WEBAPP -> WebAPI -> Microsoft API
-  <Token> TOKEN OnBehalfOf
 
-    <hr>
-    <div class="row mt-3">
+  <hr>
+  <div class="row mt-3">
 
-      <div class="col">
-        <h2>Invoke the API</h2>
-        <button (click)="callBackendApi()" type="button" class="btn btn-primary">Call Backend API</button>
+    <div class="col">
+      <h2>Invoke the API</h2>
+      <button (click)="callBackendApi()" type="button" class="btn btn-primary">Call Backend API</button>
 
-        <p *ngIf="backendResponse?.data">Result:</p>
-        <code *ngIf=" backendResponse?.data | async as result">{{ result }}</code>
-        <section [ngSwitch]="backendResponse?.status| async">
-          <code *ngSwitchCase="Status.Loading">Loading...</code>
-        </section>
-      </div>
+      <p *ngIf="backendResponse?.data">Result:</p>
+      <code *ngIf=" backendResponse?.data | async as result">{{ result }}</code>
+      <section [ngSwitch]="backendResponse?.status| async">
+        <code *ngSwitchCase="Status.Loading">Loading...</code>
+      </section>
     </div>
+  </div>
 
 
-    <div class="row mt-3">
+  <div class="row mt-3">
 
-      <div class="col">
+    <div class="col">
 
-        <button (click)="callThroughBackendApi()" type="button" class="btn btn-primary">Call Backend API
-          OnBehalfOf</button>
+      <button (click)="callThroughBackendApi()" type="button" class="btn btn-primary">Call Backend API
+        OnBehalfOf</button>
 
-        <p *ngIf="delegatedResponse?.data">Result:</p>
-        <code *ngIf=" delegatedResponse?.data | async as result">{{ result }}</code>
-        <section [ngSwitch]="delegatedResponse?.status| async">
-          <code *ngSwitchCase="Status.Loading">Loading...</code>
-        </section>
-      </div>
+      <p *ngIf="delegatedResponse?.data">Result:</p>
+      <code *ngIf=" delegatedResponse?.data | async as result">{{ result }}</code>
+      <section [ngSwitch]="delegatedResponse?.status| async">
+        <code *ngSwitchCase="Status.Loading">Loading...</code>
+      </section>
     </div>
+  </div>
 
 
 

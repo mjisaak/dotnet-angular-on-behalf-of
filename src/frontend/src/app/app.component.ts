@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { defer, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+
 const apiUrl = 'https://on-behalf-of-backend-web.azurewebsites.net';
 
 type HttpResult<T> = {
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit {
           status.next(Status.Success);
         }),
         map(tokens => {
-          return JSON.stringify(tokens[0]);
+          return JSON.stringify(tokens[0], null, 2);
         }),
         catchError((err: HttpErrorResponse) => {
           return of(`Error: ${err.status} = ${err.message}`);
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
       this.ngOnInit();
     });
   }
+
 
   public callBackendApi(): void {
     const status = new ReplaySubject<Status>();
