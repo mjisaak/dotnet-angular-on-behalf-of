@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using Microsoft.Identity.Client;
 
 namespace backend.Services
@@ -16,6 +17,7 @@ namespace backend.Services
             var userAccessToken = context.Request.Headers.Authorization
                 .FirstOrDefault()
                 ?.Replace("Bearer", "");
+            Guard.Against.Default(userAccessToken, "userAccessToken");
 
             var userAssertion = new UserAssertion(userAccessToken, "urn:ietf:params:oauth:grant-type:jwt-bearer");
             var result = await _application.AcquireTokenOnBehalfOf(scopes, userAssertion)

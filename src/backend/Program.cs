@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using backend.Options;
 using backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +22,8 @@ builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<IConfidentialClientApplication>(provider =>
 {
     var azureAdOptions = provider.GetService<IOptions<AzureAdOptions>>()!.Value;
+    Guard.Against.Null(azureAdOptions, "IOptions<AzureAdOptions>");
+
     return ConfidentialClientApplicationBuilder.Create(azureAdOptions.ClientId)
         .WithClientSecret(azureAdOptions.ClientSecret)
         .WithAuthority(AzureCloudInstance.AzurePublic, Guid.Parse(azureAdOptions.TenantId))

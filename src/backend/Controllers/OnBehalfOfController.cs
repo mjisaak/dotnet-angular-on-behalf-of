@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using backend.Services;
@@ -34,6 +35,8 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Get([FromBody] Request request)
         {
+            Guard.Against.Default(request.Scopes, "request.Scopes");
+
             using var client = _httpClientFactory.CreateClient();
             var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, request.Scopes!);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.Bearer, authenticationResult.AccessToken);
