@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   public delegatedResponse: HttpResult<string> = null;
 
   public targetUrlBackend: string = "https://graph.microsoft.com/v1.0/me";
+  public scope: string = "https://graph.microsoft.com/User.ReadWrite.All";
 
   private accessToken: string | null = null;
 
@@ -92,7 +93,7 @@ export class AppComponent implements OnInit {
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>();
     var request = this.http.post<unknown>(`${apiUrl}/api/OnBehalfOf`,
-      { api_url: this.targetUrlBackend },
+      { api_url: this.targetUrlBackend, scopes: [ this.scope ] },
       { headers: { 'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json' } }
     )
       .pipe(
