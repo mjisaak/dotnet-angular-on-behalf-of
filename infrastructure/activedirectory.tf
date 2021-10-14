@@ -19,6 +19,15 @@ resource "azuread_application" "frontend" {
       id_token_issuance_enabled = true
     }
   }
+
+  required_resource_access {
+    resource_app_id = azuread_application.backend.application_id
+
+    resource_access {
+      id   = random_uuid.azuread_application_backend.result
+      type = "Scope"
+    }
+  }
 }
 
 resource "azuread_application_password" "frontend" {
