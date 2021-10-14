@@ -19,6 +19,8 @@
 <div>
   <input [(ngModel)]="targetUrlBackend" size="50" (keyup.enter)="callThroughBackendApi()" />
   <br/>
+  <input [(ngModel)]="scope" size="50" />
+  <br/>
   <button (click)="callThroughBackendApi()">Call API (through backend)</button>
   <p>Result:</p>
   <code *ngIf="delegatedResponse?.data | async as result">{{ result }}</code>

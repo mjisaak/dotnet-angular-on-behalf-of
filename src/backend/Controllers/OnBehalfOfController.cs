@@ -21,6 +21,7 @@ namespace backend.Controllers
         public new class Request
         {
             [JsonPropertyName("api_url")] public string? ApiUrl { get; set; }
+            [JsonPropertyName("scopes")] public IEnumerable<string>? Scopes { get; set; }
         }
 
         private readonly TokenService _tokenService;
@@ -36,7 +37,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Get([FromBody] Request request)
         {
             using var client = _httpClientFactory.CreateClient();
-            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, new []{""}/* Scopes can be empty for some reason */);
+            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, request.Scopes!);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.Bearer, authenticationResult.AccessToken);
 
             return Ok(await client.GetStringAsync(request.ApiUrl!));
