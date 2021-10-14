@@ -1,6 +1,8 @@
 using backend.Options;
 using backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.Identity.Client;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<IConfidentialClientApplication>(provider =>
+{
+    var azureAdOptions = provider.GetService<IOptions<AzureAdOptions>>()!.Value;
+    return ConfidentialClientApplicationBuilder.Create(azureAdOptions.ClientId)
+        .WithClientSecret(azureAdOptions.ClientSecret)
+        .WithAuthority(AzureCloudInstance.AzurePublic, Guid.Parse(azureAdOptions.TenantId))
+        .Build();
+});
 
 var app = builder.Build();
 
