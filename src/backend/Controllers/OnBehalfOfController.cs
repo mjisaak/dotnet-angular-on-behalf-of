@@ -1,9 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using backend.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using backend.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using backend.Services;
@@ -36,7 +32,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Get([FromBody] Request request)
         {
             using var client = _httpClientFactory.CreateClient();
-            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, new []{""}/* Scopes can be empty for some reason */);
+            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, new[] { "" }/* Scopes can be empty for some reason */);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.Bearer, authenticationResult.AccessToken);
 
             return Ok(await client.GetStringAsync(request.ApiUrl!));

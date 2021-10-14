@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using backend.Extensions;
 using backend.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
