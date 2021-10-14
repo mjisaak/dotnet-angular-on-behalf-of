@@ -29,7 +29,8 @@ namespace backend.Services
             var app = BuildApp(context.User);
             var userAssertion = new UserAssertion(userAccessToken, "urn:ietf:params:oauth:grant-type:jwt-bearer");
 
-            var result = await app.AcquireTokenOnBehalfOf(scopes, userAssertion).ExecuteAsync().ConfigureAwait(false);
+            var result = await app.AcquireTokenOnBehalfOf(scopes, userAssertion)
+                .ExecuteAsync();
             return result;
         }
 

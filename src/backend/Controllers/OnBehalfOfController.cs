@@ -7,6 +7,7 @@ using backend.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using backend.Services;
+using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 
 namespace backend.Controllers
@@ -15,30 +16,30 @@ namespace backend.Controllers
     [ApiController]
     [Authorize]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class OnBehalfOfController : ControllerBase
+    internal class OnBehalfOfController : ControllerBase
     {
-        public class Request
+        internal new class Request
         {
-            [JsonPropertyName("api_url")] public string ApiUrl { get; set; }
+            [JsonPropertyName("api_url")] public string? ApiUrl { get; set; }
         }
 
-        private readonly AzureAdOptions _azureAdOptions;
         private readonly TokenService _tokenService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public OnBehalfOfController(IOptions<AzureAdOptions> options, TokenService tokenService)
+        public OnBehalfOfController(IOptions<AzureAdOptions> options, TokenService tokenService, IHttpClientFactory httpClientFactory)
         {
-            _azureAdOptions = options.Value;
             _tokenService = tokenService;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]
         public async Task<IActionResult> Get([FromBody] Request request)
         {
-            var client = new HttpClient();
-            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, new []{ "https://graph.microsoft.com/User.Read.All" });
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticationResult.AccessToken);
+            using var client = _httpClientFactory.CreateClient();
+            var authenticationResult = await _tokenService.GetAccessTokenAsync(HttpContext, Enumerable.Empty<string>() /* Scopes can be empty for some reason */);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.Bearer, authenticationResult.AccessToken);
 
-            return Ok(await client.GetStringAsync(request.ApiUrl));
+            return Ok(await client.GetStringAsync(request.ApiUrl!));
         }
     }
 }

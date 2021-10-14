@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
 
   public targetUrlBackend: string = "https://graph.microsoft.com/v1.0/me";
 
-  private idToken: string | null = null;
   private accessToken: string | null = null;
 
   constructor(private http: HttpClient) { }
@@ -39,7 +38,6 @@ export class AppComponent implements OnInit {
     var request = this.http.get<{ access_token: string, id_token: string }[]>('/.auth/me')
       .pipe(
         tap(tokens => {
-          this.idToken = tokens[0].id_token;
           this.accessToken = tokens[0].access_token;
           status.next(Status.Success);
         }),

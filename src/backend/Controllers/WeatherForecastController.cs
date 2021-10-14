@@ -8,7 +8,7 @@ namespace backend.Controllers
     [ApiController]
     [Route("[controller]")]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class WeatherForecastController : ControllerBase
+    internal class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
