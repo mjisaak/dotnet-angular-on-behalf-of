@@ -1,3 +1,8 @@
+variable "domain_name" {
+  type = string
+  default = "whiteduck.de"
+}
+
 variable "default_location" {
   type    = string
   default = "germanywestcentral"
@@ -31,4 +36,8 @@ variable "app_service_frontend_name" {
 variable "app_service_backend_name" {
   type    = string
   default = "sku-on-behalf-of-backend-web"
+}
+
+variable "graph_scopes" {
+  default = ["User.Read"]
 }

@@ -2,12 +2,22 @@ resource "azuread_application" "frontend" {
   display_name = var.azure_ad_frontend_app_name
 
   api {
-    mapped_claims_enabled          = true
     requested_access_token_version = 2
 
     known_client_applications = [
       azuread_application.backend.application_id,
     ]
+  }
+
+  web {
+    homepage_url = "https://${var.app_service_frontend_name}"
+    logout_url   = "https://${var.app_service_frontend_name}.azurewebsites.net/.auth/logout"
+    redirect_uris = ["https://${var.app_service_frontend_name}.azurewebsites.net/.auth/login/aad/callback"]
+
+    implicit_grant {
+      access_token_issuance_enabled = true
+      id_token_issuance_enabled = true
+    }
   }
 }
 
@@ -20,9 +30,9 @@ resource "random_uuid" "azuread_application_backend" {}
 
 resource "azuread_application" "backend" {
   display_name = var.azure_ad_backend_app_name
+  identifier_uris = [ "http://${random_uuid.azuread_application_backend.result}" ]
 
   api {
-    mapped_claims_enabled          = true
     requested_access_token_version = 2
 
     oauth2_permission_scope {

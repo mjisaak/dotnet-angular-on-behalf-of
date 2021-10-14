@@ -30,12 +30,12 @@ resource "azurerm_app_service" "frontend" {
     enabled                       = true
     unauthenticated_client_action = "RedirectToLoginPage"
     token_store_enabled           = true
-    runtime_version               = "~3.0"
+    default_provider              = "AzureActiveDirectory"
+    issuer                        = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/"
 
-    microsoft {
+    active_directory {
       client_id     = azuread_application.frontend.application_id
       client_secret = azuread_application_password.frontend.value
-      oauth_scopes  = [format("api://%s/user_impersonation", azuread_application.backend.application_id)]
     }
   }
 }
@@ -56,18 +56,22 @@ resource "azurerm_app_service" "backend" {
   }
 
   app_settings = {
-
+    "AzureAd__Instance" = "https://login.microsoftonline.com",
+    "AzureAd__Domain" = var.domain_name,
+    "AzureAd__TenantId" = data.azurerm_client_config.current.tenant_id,
+    "AzureAd__ClientId" = azuread_application.backend.application_id,
+    "AzureAd__ClientSecret" = azuread_application_password.backend.value,
+    "AzureAd__ClientIdUri" = azuread_application.backend.application_id,
+    "AzureAd__GraphScopes" = join(", ", var.graph_scopes)
   }
 
   auth_settings {
     enabled             = false
     token_store_enabled = true
-    runtime_version     = "~3.0"
 
-    microsoft {
+    active_directory {
       client_id     = azuread_application.backend.application_id
       client_secret = azuread_application_password.backend.value
-      #      oauth_scopes = [ "" ]
     }
   }
 }
