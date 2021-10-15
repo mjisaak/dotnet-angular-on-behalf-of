@@ -104,9 +104,8 @@ export class AppComponent implements OnInit {
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>();
     var request = this.http
-      .post<unknown>(
+      .get<unknown>(
         `${apiUrl}/api/OnBehalfOf`,
-        { api_url: this.targetUrlBackend, scopes: [this.scope] },
         {
           headers: {
             Authorization: `Bearer ${this.accessToken}`,
