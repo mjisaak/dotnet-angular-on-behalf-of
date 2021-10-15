@@ -32,6 +32,7 @@ resource "azurerm_app_service" "frontend" {
     token_store_enabled           = true
     default_provider              = "AzureActiveDirectory"
     issuer                        = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/"
+    runtime_version               = "V2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
 
     active_directory {
       client_id     = azuread_application.frontend.application_id
@@ -49,6 +50,7 @@ resource "azurerm_app_service" "backend" {
   site_config {
     scm_type                 = "None"
     dotnet_framework_version = "v6.0"
+    linux_fx_version         = "DOTNET|6.0"
 
     cors {
       allowed_origins = [format("%s%s", "https://", azurerm_app_service.frontend.default_site_hostname)]
@@ -56,18 +58,21 @@ resource "azurerm_app_service" "backend" {
   }
 
   app_settings = {
-    "AzureAd__Instance" = "https://login.microsoftonline.com",
-    "AzureAd__Domain" = var.domain_name,
-    "AzureAd__TenantId" = data.azurerm_client_config.current.tenant_id,
-    "AzureAd__ClientId" = azuread_application.backend.application_id,
+    "AzureAd__Instance"     = "https://login.microsoftonline.com",
+    "AzureAd__Domain"       = var.domain_name,
+    "AzureAd__TenantId"     = data.azurerm_client_config.current.tenant_id,
+    "AzureAd__ClientId"     = azuread_application.backend.application_id,
     "AzureAd__ClientSecret" = azuread_application_password.backend.value,
-    "AzureAd__ClientIdUri" = azuread_application.backend.application_id,
-    "AzureAd__GraphScopes" = join(", ", var.graph_scopes)
+    "AzureAd__ClientIdUri"  = azuread_application.backend.application_id,
+    "AzureAd__GraphScopes"  = join(", ", var.graph_scopes)
   }
 
   auth_settings {
-    enabled             = false
-    token_store_enabled = true
+    enabled                       = false
+    token_store_enabled           = true
+    default_provider              = "AzureActiveDirectory"
+    issuer                        = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/"
+    runtime_version               = "V2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
 
     active_directory {
       client_id     = azuread_application.backend.application_id

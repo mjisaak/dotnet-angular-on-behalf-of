@@ -10,13 +10,13 @@ resource "azuread_application" "frontend" {
   }
 
   web {
-    homepage_url = "https://${var.app_service_frontend_name}"
-    logout_url   = "https://${var.app_service_frontend_name}.azurewebsites.net/.auth/logout"
+    homepage_url  = "https://${var.app_service_frontend_name}"
+    logout_url    = "https://${var.app_service_frontend_name}.azurewebsites.net/.auth/logout"
     redirect_uris = ["https://${var.app_service_frontend_name}.azurewebsites.net/.auth/login/aad/callback"]
 
     implicit_grant {
       access_token_issuance_enabled = true
-      id_token_issuance_enabled = true
+      id_token_issuance_enabled     = true
     }
   }
 
@@ -30,6 +30,10 @@ resource "azuread_application" "frontend" {
   }
 }
 
+resource "azuread_service_principal" "frontend" {
+  application_id = azuread_application.frontend.application_id
+}
+
 resource "azuread_application_password" "frontend" {
   application_object_id = azuread_application.frontend.object_id
   display_name          = var.azure_ad_frontend_app_name
@@ -38,8 +42,8 @@ resource "azuread_application_password" "frontend" {
 resource "random_uuid" "azuread_application_backend" {}
 
 resource "azuread_application" "backend" {
-  display_name = var.azure_ad_backend_app_name
-  identifier_uris = [ "http://${random_uuid.azuread_application_backend.result}" ]
+  display_name    = var.azure_ad_backend_app_name
+  identifier_uris = ["http://${random_uuid.azuread_application_backend.result}"]
 
   api {
     requested_access_token_version = 2
@@ -68,6 +72,10 @@ resource "azuread_application" "backend" {
       type = "Scope"
     }
   }
+}
+
+resource "azuread_service_principal" "backend" {
+  application_id = azuread_application.backend.application_id
 }
 
 resource "azuread_application_password" "backend" {
