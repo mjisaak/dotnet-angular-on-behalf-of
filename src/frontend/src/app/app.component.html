@@ -21,7 +21,7 @@
 
     <div class="col">
       <h2>Invoke the API</h2>
-      <button (click)="callBackendApi()" type="button" class="btn btn-primary">Call Backend API</button>
+      <button (click)="checkApiHealth()" type="button" class="btn btn-primary">Test API health</button>
 
       <p *ngIf="backendResponse?.data">Result:</p>
       <code *ngIf=" backendResponse?.data | async as result">{{ result }}</code>
@@ -36,7 +36,7 @@
 
     <div class="col">
 
-      <button (click)="callThroughBackendApi()" type="button" class="btn btn-primary">Call Backend API
+      <button (click)="callThroughBackendApi()" type="button" class="btn btn-primary">Call API
         OnBehalfOf</button>
 
       <p *ngIf="delegatedResponse?.data">Result:</p>

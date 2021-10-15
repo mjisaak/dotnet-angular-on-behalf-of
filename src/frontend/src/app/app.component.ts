@@ -4,7 +4,7 @@ import { defer, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
-const apiUrl = 'https://on-behalf-of-backend-web.azurewebsites.net';
+const apiUrl = 'https://on-behalf-of-backend-web-2.azurewebsites.net';
 
 type HttpResult<T> = {
   data: Observable<T>;
@@ -19,7 +19,7 @@ enum Status {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   public Status = Status;
@@ -28,58 +28,66 @@ export class AppComponent implements OnInit {
   public backendResponse: HttpResult<string> = null;
   public delegatedResponse: HttpResult<string> = null;
 
-  public targetUrlBackend: string = "https://graph.microsoft.com/v1.0/me";
-  public scope: string = "https://graph.microsoft.com/User.ReadWrite.All";
+  public targetUrlBackend: string = 'https://graph.microsoft.com/v1.0/me';
+  public scope: string = 'https://graph.microsoft.com/User.ReadWrite.All';
 
   private accessToken: string | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.get<{ access_token: string, id_token: string }[]>('/.auth/me')
+    var request = this.http
+      .get<{ access_token: string; id_token: string }[]>('/.auth/me')
       .pipe(
-        tap(tokens => {
+        tap((tokens) => {
           this.accessToken = tokens[0].access_token;
           status.next(Status.Success);
         }),
-        map(tokens => {
+        map((tokens) => {
           return JSON.stringify(tokens[0], null, 2);
         }),
         catchError((err: HttpErrorResponse) => {
           return of(`Error: ${err.status} = ${err.message}`);
-        }),
+        })
       );
 
     this.tokenResponse = {
       data: defer(() => {
         status.next(Status.Loading);
         return request;
-      }), status
+      }),
+      status,
     };
+
+    this.tokenResponse.data.subscribe();
   }
 
   public refreshToken(): void {
     var request = this.http.get<void>('/.auth/refresh');
-    request.subscribe(_ => {
+    request.subscribe((_) => {
       this.ngOnInit();
     });
   }
 
-
-  public callBackendApi(): void {
+  public checkApiHealth(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.get<unknown>(`${apiUrl}/WeatherForecast`,
-      { headers: { 'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json' } }
-    )
+
+
+    var request = this.http
+      .get(`${apiUrl}/health`, {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        responseType: 'text',
+      })
       .pipe(
-        map(result => {
-          return JSON.stringify(result);
-        }),
         catchError((err: HttpErrorResponse) => {
+          console.log('now', err);
           return of(`Error: ${err.status} = ${err.message}`);
         }),
-        tap(_ => {
+        tap((_) => {
           status.next(Status.Success);
         })
       );
@@ -88,24 +96,32 @@ export class AppComponent implements OnInit {
       data: defer(() => {
         status.next(Status.Loading);
         return request;
-      }), status
+      }),
+      status,
     };
   }
 
   public callThroughBackendApi(): void {
     const status = new ReplaySubject<Status>();
-    var request = this.http.post<unknown>(`${apiUrl}/api/OnBehalfOf`,
-      { api_url: this.targetUrlBackend, scopes: [ this.scope ] },
-      { headers: { 'Authorization': `Bearer ${this.accessToken}`, 'Content-Type': 'application/json' } }
-    )
+    var request = this.http
+      .post<unknown>(
+        `${apiUrl}/api/OnBehalfOf`,
+        { api_url: this.targetUrlBackend, scopes: [this.scope] },
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       .pipe(
-        map(result => {
+        map((result) => {
           return JSON.stringify(result);
         }),
         catchError((err: HttpErrorResponse) => {
           return of(`Error: ${err.status} = ${err.message}`);
         }),
-        tap(_ => {
+        tap((_) => {
           status.next(Status.Success);
         })
       );
@@ -114,7 +130,8 @@ export class AppComponent implements OnInit {
       data: defer(() => {
         status.next(Status.Loading);
         return request;
-      }), status
+      }),
+      status,
     };
   }
 }
