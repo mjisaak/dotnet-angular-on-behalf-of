@@ -32,7 +32,7 @@ resource "azurerm_app_service" "frontend" {
     token_store_enabled           = true
     default_provider              = "AzureActiveDirectory"
     issuer                        = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/"
-    runtime_version               = "V2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
+    runtime_version               = "~v2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
 
     active_directory {
       client_id     = azuread_application.frontend.application_id
@@ -54,6 +54,7 @@ resource "azurerm_app_service" "backend" {
 
     cors {
       allowed_origins = [format("%s%s", "https://", azurerm_app_service.frontend.default_site_hostname)]
+      support_credentials = true
     }
   }
 
@@ -72,7 +73,7 @@ resource "azurerm_app_service" "backend" {
     token_store_enabled           = true
     default_provider              = "AzureActiveDirectory"
     issuer                        = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/"
-    runtime_version               = "V2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
+    runtime_version               = "~v2" # https://github.com/hashicorp/terraform-provider-azurerm/issues/13591
 
     active_directory {
       client_id     = azuread_application.backend.application_id
