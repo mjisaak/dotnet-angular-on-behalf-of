@@ -95,7 +95,33 @@ Just like we did for the frontend Web App, we have to set the access token versi
 On the API permissions page, click on the *+Add a permissions* button under *Configured permissions*. Select Microsoft Graph and add a *Delegated permissions* to `User.ReadWrite.All`. Since the added permissions requires an admin consent, we will also have to click on the *Grant admin consent for <Tenant>* button*
 ![Grant Admin Consent](assets/be-grant-admin-consent.png)
 
+### Extend Frontend configuration
 
+Now, after we have created the backend, we will have to do some changes to our frontend application.
+
+#### API permission
+
+Now that we have created both application, we will have to give the frontend the permission to call the API. Go back to the Azure AD App registration of your frontend and click on API permissions. From there, click on Add a permission and go to the APIs my organization uses tab. There you can enter the Application ID or the name of the backend API:
+
+![Find the backend AAD application](assets/fe-find-backend.png)
+
+Now select user_impersonation (allows the application to access the backend on behalf of the signed-in user) and click on the Add permissions button:
+
+![Add API permission](assets/fe-add-backend-permission.png)
+
+#### Configure the frontend Identity Provider to include an access token for the backend
+
+Go to https://resources.azure.com/, at the top of the page, select Read/Write. In the left browser, navigate to subscriptions > <subscription_name > resourceGroups > <resource_group_name> > providers > Microsoft.Web > sites > <app_name> > config > authsettingsV2. Click on Edit and modify the following property:
+
+"identityProviders": {
+  "azureActiveDirectory": {
+    "login": {
+      "loginParameters": ["scope=openid profile email api://95f594f8-7bef-42f7-8e94-926f50c52c38/user_impersonation"]
+    }
+  }
+}
+
+![Add Login Parameter](assets/fe-add-login-paramters.png)
 
 # TODO
 
