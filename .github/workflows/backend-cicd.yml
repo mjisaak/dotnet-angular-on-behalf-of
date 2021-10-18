@@ -3,6 +3,8 @@ name: backend CI/CD
 on:
   workflow_dispatch:
   push:
+    paths:
+      - './src/backend/**'
     branches:
     - main
 env:
